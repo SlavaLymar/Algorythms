@@ -1,4 +1,4 @@
-package interview;
+package interview.slidingwindow;
 
 public class MinSizeSubArraySum {
 

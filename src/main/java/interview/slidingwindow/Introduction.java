@@ -1,4 +1,4 @@
-package interview;
+package interview.slidingwindow;
 
 import java.util.Arrays;
 
