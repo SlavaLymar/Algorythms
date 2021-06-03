@@ -15,18 +15,20 @@ public class RearrangeList {
         ListNode reversed = reverse(slow);
 
         // head
-        // 2 -> 4 -> 6
-        // next
-        // null
+        // 2 -> 12 -> 4 -> 10 -> *6 -> 8
+        // tmp
+        // 8
         // reversed
-        // 12 -> 10 -> 8
-        while (head != null && head.next != null) {
-            ListNode next = head.next;
+        // 12 -> 10 -> *8
+        while (head != null && reversed != null) {
+            ListNode tmp = head.next;
             head.next = reversed;
             head = head.next;
-            head.next = next;
-            head = head.next;
             reversed = reversed.next;
+            if (reversed != null) {
+                head.next = tmp;
+            }
+            head = head.next;
         }
     }
 
