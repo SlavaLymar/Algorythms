@@ -1,14 +1,37 @@
 package interview.mergeintervals;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MaximumCPULoad {
 
+    // Jobs: [[1,4,3], [2,5,4], [7,9,6]]
+    // Output: 7
+    //    v
+    // [[1,4,3], [2,5,4], [7,9,6]]   [[1,4,3]]
+    //              v
+    // [[1,4,3], [2,5,4], [7,9,6]]   [[1,4,3], [2,5,4]]
+    //                       v
+    // [[1,4,3], [2,5,4], [7,9,6]]   [[7,9,6]]
+    //
+    // |_|_|_|_|_|_|_|_|_|_|
+    //   1       5       9
+    //   |_|_|_|      |_|_|
+    //     |_|_|_|
+    // N * Log N + N + N = N * Log N
     public static int findMaxCPULoad(List<Job> jobs) {
-        // TODO: Write your code here
-        return -1;
+        jobs.sort(Comparator.comparingInt(o -> o.start)); // N * Log N
+        int curLoadCPU = 0, maxLoadCPU = curLoadCPU;
+        Queue<Job> queue =
+                new PriorityQueue<>(jobs.size(), Comparator.comparingInt(o -> o.end));
+        for (Job job : jobs) { // N
+            while (queue.size() > 0 && job.start >= queue.peek().end) { // N
+                curLoadCPU -= queue.remove().cpuLoad;
+            }
+            queue.offer(job);
+            curLoadCPU += job.cpuLoad;
+            maxLoadCPU = Math.max(maxLoadCPU, curLoadCPU);
+        }
+        return maxLoadCPU;
     }
 
     public static void main(String[] args) {

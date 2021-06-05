@@ -32,9 +32,10 @@ public class KnuthMorrisPrattAlgorithm {
         } while (i < str.length() && j < pattern.length());
         return result;
     }
-
+    // j
     // A B C D A B D
     // 0 0 0 0 1 2 0
+    //   i
     private static int[] prefixFun(String pattern) {
         int[] p = new int[pattern.length()];
         if (pattern.length() <= 1) {
