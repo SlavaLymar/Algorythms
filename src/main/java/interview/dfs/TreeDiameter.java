@@ -1,30 +1,22 @@
 package interview.dfs;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class TreeDiameter {
 
+    private static int treeDiameter = 0;
+
     public static int findDiameter(TreeNode root) {
-        if (root == null) return 0;
-        List<TreeNode> stack = new LinkedList<>();
-        stack.add(root);
-        int maxDiameter = Integer.MIN_VALUE;
-        while (!stack.isEmpty()) {
-            TreeNode current = stack.remove(stack.size() - 1);
-            maxDiameter = Math.max(maxDiameter, findDiameterRecursive(current, 1, stack));
-        }
-        return maxDiameter;
+        findDiameterRecursive(root);
+        return treeDiameter;
     }
 
-    public static int findDiameterRecursive(TreeNode current, int diameter, List<TreeNode> stack) {
+    public static int findDiameterRecursive(TreeNode current) {
         if (current == null) return 0;
-        diameter += findDiameterRecursive(current.left, 1, stack);
-        diameter += findDiameterRecursive(current.right, 1, stack);
-        if (current.left != null && current.right != null) {
-            stack.add(current);
+        int left = findDiameterRecursive(current.left);
+        int right = findDiameterRecursive(current.right);
+        if (left != 0 && right != 0) {
+            treeDiameter = Math.max(treeDiameter, left + right + 1);
         }
-        return diameter;
+        return Math.max(left, right) + 1;
     }
 
     public static void main(String[] args) {
