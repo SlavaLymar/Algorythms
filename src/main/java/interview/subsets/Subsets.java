@@ -12,7 +12,8 @@ public class Subsets {
     //               []  [1]   [5] [1, 5]
     //   []  [1]  [5] [1, 5]   [3] [1, 3] [1, 5] [1, 5, 3]
     //
-    // T = O (N * 2 ^ N), Space = O (2 ^ N)
+    // T = O (N * 2 ^ N),
+    // Space = O (2 ^ N)
     public static List<List<Integer>> findSubsets(int[] nums) {
         List<List<Integer>> subsets = new ArrayList<>();
         subsets.add(new ArrayList<>());
