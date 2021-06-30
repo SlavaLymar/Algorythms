@@ -1,9 +1,13 @@
 package interview.subsets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EvaluateExpression {
+
+    private static final Map<String, List<Integer>> EXPRESSION_RESULT = new HashMap<>();
 
     // Input: "1+2*3"
     // Output: 7, 9
@@ -20,6 +24,9 @@ public class EvaluateExpression {
     // t: O (N * 2 ^ N)
     // space: O (2 ^ N)
     public static List<Integer> diffWaysToEvaluateExpression(String input) {
+        if (EXPRESSION_RESULT.containsKey(input)) {
+            return EXPRESSION_RESULT.get(input);
+        }
         List<Integer> result = new ArrayList<>();
         if (!input.contains("+") && !input.contains("*") && !input.contains("-") && !input.contains("/")) {
             result.add(Integer.valueOf(input));
@@ -45,6 +52,7 @@ public class EvaluateExpression {
                 }
             }
         }
+        EXPRESSION_RESULT.put(input, result);
         return result;
     }
 
