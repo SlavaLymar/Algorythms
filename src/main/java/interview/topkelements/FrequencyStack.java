@@ -15,6 +15,9 @@ public class FrequencyStack {
     // [ {2,2,3}, {5,1,6}, {3,1,2}, {2,1,1}, {1,1,0} ]
     // pop() => 2
     //
+    // t: O (N + Log N)
+    // space: O (N)
+    //
     class Element {
         int number;
         int frequency;
