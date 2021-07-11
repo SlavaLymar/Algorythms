@@ -9,6 +9,11 @@ public class KnuthMorrisPrattAlgorithm {
         System.out.println(search("ABC ABCDAB ABCDABCDABDE", "ABCDABD"));
     }
 
+    // i
+    // ABC ABCDAB ABCDABCDABDE
+    // j
+    // ABCDABD
+    // 0000120
     private static List<Integer> search(String str, String pattern) {
         int[] p = prefixFun(pattern);
         List<Integer> result = new ArrayList<>();
@@ -32,6 +37,7 @@ public class KnuthMorrisPrattAlgorithm {
         } while (i < str.length() && j < pattern.length());
         return result;
     }
+
     // j
     // A B C D A B D
     // 0 0 0 0 1 2 0
