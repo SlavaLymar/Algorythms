@@ -1,9 +1,9 @@
-package interview;
+package interview.hackerrank;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Result {
+public class MinXWhileSum {
 
     public static int minX(List<Integer> arr) {
         int result = 0;
