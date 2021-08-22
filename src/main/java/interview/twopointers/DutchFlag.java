@@ -10,6 +10,7 @@ public class DutchFlag {
         System.out.println(Arrays.toString(arr));
     }
 
+    // i
     // l
     // 2, 2, 0, 1, 2, 0
     //                h
