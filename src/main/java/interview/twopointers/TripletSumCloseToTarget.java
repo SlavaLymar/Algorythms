@@ -5,7 +5,7 @@ import java.util.*;
 public class TripletSumCloseToTarget {
 
     public static void main(String[] args) {
-        System.out.println(searchTriplet(new int[]{-2, 0, 1, 2}, 2));
+        System.out.println(searchTriplet(new int[]{-1,2,1,-4}, 1));
         System.out.println(searchTriplet(new int[]{-3, -1, 1, 2}, 1));
         System.out.println(searchTriplet(new int[]{1, 0, 1, 1}, 3));
     }
@@ -14,32 +14,26 @@ public class TripletSumCloseToTarget {
     // 0, 1, 1, 1
     // l        r
     public static int searchTriplet(int[] arr, int targetSum) {
-        if (arr == null || arr.length < 3) {
+        if (arr == null || arr.length < 3)
             throw new IllegalArgumentException();
-        }
+
         Arrays.sort(arr);
-        int minDifference = Integer.MAX_VALUE;
-        int left = 0, right = arr.length - 1;
-        while (right - left >= 2) {
-            int lNumber = arr[left];
-            int rNumber = arr[right];
-            int sum = lNumber + rNumber;
-
-            int iRight = right - 1;
-            while (iRight > left && Math.abs(sum + arr[iRight]) <= targetSum) {
-                minDifference = Math.min(minDifference, targetSum - Math.abs(sum + arr[iRight--]));
-            }
-            int iLeft = left + 1;
-            while (right < iLeft && Math.abs(sum + arr[iLeft]) > targetSum) {
-                minDifference = Math.min(minDifference, targetSum - Math.abs(sum + arr[iLeft++]));
-            }
-
-            if (sum < targetSum) {
-                left++;
-            } else {
-                right--;
+        int smallestDifference = Integer.MAX_VALUE;
+        for (int i = 0; i < arr.length - 2; i++) {
+            int left = i + 1, right = arr.length - 1;
+            while (left < right) {
+                int targetDiff = targetSum - arr[i] - arr[left] - arr[right];
+                if (targetDiff == 0)
+                    return targetSum - targetDiff;
+                if (Math.abs(targetDiff) < Math.abs(smallestDifference)
+                        || (Math.abs(targetDiff) == Math.abs(smallestDifference) && targetDiff > smallestDifference))
+                    smallestDifference = targetDiff;
+                if (targetDiff > 0)
+                    left++;
+                else
+                    right--;
             }
         }
-        return targetSum - minDifference;
+        return targetSum - smallestDifference;
     }
 }
