@@ -1,5 +1,7 @@
 package leetcode.medium;
 
+import java.util.LinkedList;
+
 public class RemoveNthNodeFromEndOfList {
 
     public static class ListNode {
