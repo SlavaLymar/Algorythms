@@ -5,10 +5,10 @@ public class RegularExpressionMatching {
     //
     // s = "mississippi", p = "mis*is*p*."
     //
-    //        i
+    //
     //  a a b
     //  c * a * b
-    //            p
+    //
     //
     public static boolean isMatch(String s, String p) {
         boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
