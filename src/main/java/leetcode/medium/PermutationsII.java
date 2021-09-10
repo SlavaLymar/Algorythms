@@ -1,42 +1,77 @@
 package leetcode.medium;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class PermutationsII {
 
     //
-    // [1,1,2]
-    //
-    //  1                                  [1]
-    //  1                                 [1,1]
-    //  2                        [2,1,1] [1,2,1] [1,1,2]
-    //
-    //
+    // [2,2,1,1]
     //
     //
     // t: O (N * Log N)
     // space: O ()
     //
-    public List<List<Integer>> permuteUnique(int[] nums) {
-        // Arrays.sort(nums);
+    public static List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        result.add(Collections.singletonList(nums[0]));
-        int prev = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            List<List<Integer>> innerResult = new ArrayList<>();
-            for (List<Integer> set: result) {
-                int size = set.size();
-                for (int j = prev == nums[i] ? size / 2: 0; j < size; j++) {
-                    List<Integer> list = new ArrayList<>(set);
-                    list.add(j, nums[i]);
-                    innerResult.add(list);
-                }
-            }
-            result = innerResult;
-            prev = nums[i];
+        HashMap<Integer, Integer> counter = new HashMap<>();
+        for (int num : nums) {
+            counter.put(num, counter.getOrDefault(num, 0) + 1);
         }
+        backward(result, nums.length, counter, new ArrayList<>());
         return result;
     }
+
+    private static void backward(List<List<Integer>> result, int length, HashMap<Integer, Integer> counter, List<Integer> combination) {
+        if (combination.size() == length) {
+            result.add(new ArrayList<>(combination));
+            return;
+        }
+        for (Map.Entry<Integer, Integer> entry : counter.entrySet()) {
+            int num = entry.getKey();
+            int count = entry.getValue();
+
+            if (count == 0) {
+                continue;
+            }
+            combination.add(num);
+            counter.put(num, count - 1);
+
+            backward(result, length, counter, combination);
+
+            combination.remove(combination.size() - 1);
+            counter.put(num, count);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(permuteUnique(new int[]{2, 2, 1, 1}));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
