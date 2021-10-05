@@ -1,7 +1,5 @@
 package leetcode.hard;
 
-import java.util.HashMap;
-
 public class SudokuSolver {
 
     //
