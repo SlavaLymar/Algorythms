@@ -1,5 +1,7 @@
 package leetcode.hard;
 
+import java.util.Arrays;
+
 public class SudokuSolver {
 
     //
