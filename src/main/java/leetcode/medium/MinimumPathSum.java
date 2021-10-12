@@ -3,12 +3,13 @@ package leetcode.medium;
 public class MinimumPathSum {
 
     //
-    //    0 1 2
-    // 0  1 4 5
-    // 1  2 7 6
-    // 2  6 8 7
+    //    0 1 2 - n
+    // 0  1 4 5     1 3 1
+    // 1  2 7 6     1 5 1
+    // 2  6 8 7     4 2 1
+    // m
     //
-    // t: O (N ^ 2)
+    // t: O (n * m)
     // space: O (1)
     //
     public int minPathSum(int[][] grid) {
