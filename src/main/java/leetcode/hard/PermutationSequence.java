@@ -1,53 +1,54 @@
 package leetcode.hard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PermutationSequence {
 
-    //
-    // n = 3, k = 3
-    //
-    // 1                            1
-    // 2                      12         21
-    // 3                312    132   123     321   231   213
-    //
-    // t: O
-    // space: O
-    //
+    /**
+     * Suppose the number (n) is 5 and you want to find the 70 sequence (k).
+     * Factorial of 5 is 120.
+     * Make a list of all integer like (1,2,3,4,5).
+     *
+     * First Iteration: Divide the 120 permutations(factorial of 5) into 5 (number n) buckets. Like 1-24, 25-48, 49-72,73-96,97-120.
+     * We know that 70 will fall in the third bucket. That means the first digit will 3. Remove 3 from the list. Ans is 3
+     * Remaining items in list (1,2,4,5)
+     *
+     * Second Iteration: Now concentrate on the third bucket. Each bucket had 24 members, right.
+     * Divide the bucket element into 4 (n-1) sub-buckets like 49-54, 55-60, 61-66, 67-72.
+     * 70 will come in the 4 bucket and we have 5 in there. Remove 5 from the list, so it is 35.
+     * Remaining items in list (1,2,4)
+     *
+     * Third Iteration: Divide the forth subbucket in 3 buckets like 67-68,69-70,71-72
+     * 70 falls in second bucket second bucket which is 2. Remove 2. So it is 352 and remaining list is 1,4
+     *
+     * and so on.
+     */
     public static String getPermutation(int n, int k) {
-        List<StringBuilder> list = new ArrayList<>();
-        list.add(new StringBuilder("1"));
-        for (int i = 2; i <= n ; i++) {
-            List<StringBuilder> inner = new ArrayList<>();
-            int size = list.size();
-            for (int j = 0; j < fact(i) ; j++) {
-                for (int l = i - 1; l >= 0; l--) {
-                    StringBuilder sb = new StringBuilder(list.get(j));
-                    if (l > size - 1) {
-                        sb.append((char) (i + '0'));
-                        inner.add(sb);
-                    } else {
-                        sb.setCharAt(l, (char) (i + '0'));
-                        inner.add(sb);
-                    }
-                }
-            }
-            list = inner;
+        int fact = 1;
+        List<Integer> list = new ArrayList<>();
+        for (int a = 1; a <= n; a++) {
+            fact = fact * a;
+            list.add(a);
         }
-        return list.get(k).toString();
-    }
+        StringBuilder sb = new StringBuilder();
 
-    private static int fact(int num) {
-        if (num == 1) return 1;
-        return num * (fact(num - 1));
+        for (int a = n; a >= 1; a--) {
+            fact = fact / a;                         // Number of elements in each bucket
+            int divison = k / fact;                  // The bucket the sequence falls
+            int modu = k % fact;
+            if (modu == 0) divison = divison - 1;     // Special Case
+            int rem = list.get(divison);
+            list.remove(divison);
+            k = k - (fact * divison);
+            sb.append(rem);
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {
-        long time1 = new Date().getTime();
-        System.out.println(getPermutation(3,3));
-//        System.out.println(getPermutation(4,9));
-//        System.out.println(getPermutation(9,331987));
-        long time2 = new Date().getTime();
-//        System.out.println(time2 - time1);
+        System.out.println(getPermutation(3, 3));
+//        System.out.println(getPermutation(4, 9));
+//        System.out.println(getPermutation(9, 135401));
     }
 }
