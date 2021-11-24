@@ -51,8 +51,8 @@ public class MinimumWindowSubstring {
 
     public static void main(String[] args) {
         System.out.println(new MinimumWindowSubstring().minWindow("ADOBECODBBANC", "ABBC"));  // "BBANC"
-//        System.out.println(new MinimumWindowSubstring().minWindow("abc", "c"));    // "c"
-//        System.out.println(new MinimumWindowSubstring().minWindow("acbbaca", "aba"));  // "baca"
-//        System.out.println(new MinimumWindowSubstring().minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));  // "abbbbbcdd"
+        System.out.println(new MinimumWindowSubstring().minWindow("abc", "c"));    // "c"
+        System.out.println(new MinimumWindowSubstring().minWindow("acbbaca", "aba"));  // "baca"
+        System.out.println(new MinimumWindowSubstring().minWindow("aaaaaaaaaaaabbbbbcdd", "abcdd"));  // "abbbbbcdd"
     }
 }
