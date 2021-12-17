@@ -32,8 +32,8 @@ public class AddTwoNumber {
     }
 
     public class ListNode {
-        int val;
-        ListNode next;
+        public int val;
+        public ListNode next;
 
         ListNode() {
         }
@@ -45,6 +45,14 @@ public class AddTwoNumber {
         ListNode(int val, ListNode next) {
             this.val = val;
             this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            return "ListNode{" +
+                    "val=" + val +
+                    ", next=" + next +
+                    '}';
         }
     }
 }
