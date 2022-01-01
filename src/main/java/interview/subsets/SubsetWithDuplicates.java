@@ -17,18 +17,24 @@ public class SubsetWithDuplicates {
     // t: O (N*LogN + N * 2^N) => O (N * (LogN + 2^N)) => O (N * 2^N)
     // space: O (2^N)
     public static List<List<Integer>> findSubsets(int[] nums) {
+        Arrays.sort(nums);
         List<List<Integer>> subsets = new ArrayList<>();
-        Arrays.sort(nums); // N*LogN
         subsets.add(new ArrayList<>());
-        int prev = 0;
-        for (int j = 0; j < nums.length; j++) { // N
-            int size = subsets.size();
-            for (int i = nums[j] == prev ? size / 2: 0; i < size; i++) { // 2^N
-                List<Integer> set = new ArrayList<>(subsets.get(i));
-                set.add(nums[j]);
+        int startIndex = 0, endIndex = 0;
+        for (int i = 0; i < nums.length; i++) {
+            startIndex = 0;
+            // if current and the previous elements are same, create new subsets only from the subsets
+            // added in the previous step
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                startIndex = endIndex + 1;
+            }
+            endIndex = subsets.size() - 1;
+            for (int j = startIndex; j <= endIndex; j++) {
+                // create a new subset from the existing subset and add the current element to it
+                List<Integer> set = new ArrayList<>(subsets.get(j));
+                set.add(nums[i]);
                 subsets.add(set);
             }
-            prev = nums[j];
         }
         return subsets;
     }
