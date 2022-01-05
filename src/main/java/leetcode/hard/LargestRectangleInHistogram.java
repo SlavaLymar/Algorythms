@@ -1,50 +1,44 @@
 package leetcode.hard;
 
-import java.util.Arrays;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class LargestRectangleInHistogram {
 
     //
-    //
     //  i
-    //  0, 9         square = 6, min = 1
+    //  2, 1, 5, 6, 2, 3      maxArea = 0
     //
+    // stack: -1
     //
-    //
-    //
-    //
+    // t: O (N)
+    // space: O (N)
     //
     public int largestRectangleArea(int[] heights) {
-        if (heights == null) return -1;
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(-1);
         int length = heights.length;
-        if (length == 1) return heights[0];
-        if (length == 0) return 0;
-        return helper(heights);
-    }
-
-    public int helper(int[] arr) {
-        int length = arr.length;
-        if (length == 1) return arr[0];
-        if (length == 0) return 0;
-        int square = length, minIdx = this.findMinValue(arr);
-        square = square * arr[minIdx];
-        int[] left = Arrays.copyOfRange(arr, 0, minIdx);
-        int[] right = Arrays.copyOfRange(arr, minIdx + 1, length);
-        return Math.max(square, Math.max(helper(left), helper(right)));
-    }
-
-    private int findMinValue(int[] arr) {
-        if (arr.length == 1) return 0;
-        int minIdx = 0;
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] < arr[minIdx]) {
-                minIdx = i;
+        int maxArea = 0;
+        for (int i = 0; i < length; i++) {
+            while ((stack.peek() != -1)
+                    && (heights[stack.peek()] >= heights[i])) {
+                int currentHeight = heights[stack.pop()];
+                int currentWidth = i - stack.peek() - 1;
+                maxArea = Math.max(maxArea, currentHeight * currentWidth);
             }
+            stack.push(i);
         }
-        return minIdx;
+        while (stack.peek() != -1) {
+            int currentHeight = heights[stack.pop()];
+            int currentWidth = length - stack.peek() - 1;
+            maxArea = Math.max(maxArea, currentHeight * currentWidth);
+        }
+        return maxArea;
     }
 
     public static void main(String[] args) {
-        System.out.println(new LargestRectangleInHistogram().largestRectangleArea(new int[]{0,9}));
+        System.out.println(new LargestRectangleInHistogram().largestRectangleArea(
+                new int[]{2, 1, 5, 6, 2, 3}
+        ));
     }
 }
