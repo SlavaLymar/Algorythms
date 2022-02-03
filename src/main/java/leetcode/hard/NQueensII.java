@@ -76,28 +76,21 @@ public class NQueensII {
             colRight++;
         }
 
-        int[] leftUp = new int[]{row - 1, col - 1},
-                leftDown = new int[]{row + 1, col - 1},
-                rightUp = new int[]{row - 1, col + 1},
-                rightDown = new int[]{row + 1, col + 1};
-        while (leftUp[0] >= 0 && leftUp[1] >= 0
-                || leftDown[0] < length && leftDown[1] >= 0
-                || rightUp[0] >= 0 && rightUp[1] < length
-                || rightDown[0] < length && rightDown[1] < length) {
-            if (leftUp[0] >= 0 && leftUp[1] >= 0 && board[leftUp[0]][leftUp[1]]
-                    || leftDown[0] < length && leftDown[1] >= 0 && board[leftDown[0]][leftDown[1]]
-                    || rightUp[0] >= 0 && rightUp[1] < length && board[rightUp[0]][rightUp[1]]
-                    || rightDown[0] < length && rightDown[1] < length && board[rightDown[0]][rightDown[1]]) {
+        int minusRow = row - 1, minusCol = col - 1, plusRow = row + 1, plusCol = col + 1;
+        while (minusRow >= 0 && minusCol >= 0
+                || plusRow < length && minusCol >= 0
+                || minusRow >= 0 && plusCol < length
+                || plusRow < length && plusCol < length) {
+            if (minusRow >= 0 && minusCol >= 0 && board[minusRow][minusCol]
+                    || plusRow < length && minusCol >= 0 && board[plusRow][minusCol]
+                    || minusRow >= 0 && plusCol < length && board[minusRow][plusCol]
+                    || plusRow < length && plusCol < length && board[plusRow][plusCol]) {
                 return false;
             }
-            leftUp[0]--;
-            leftUp[1]--;
-            leftDown[0]++;
-            leftDown[1]--;
-            rightUp[0]--;
-            rightUp[1]++;
-            rightDown[0]++;
-            rightDown[1]++;
+            minusRow--;
+            minusCol--;
+            plusRow++;
+            plusCol++;
         }
         return true;
     }
