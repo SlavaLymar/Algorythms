@@ -46,7 +46,7 @@ public class AhoCorasick {
         return startIndexes;
     }
 
-    public Set<String> findSubstringInListOfStrings(String pattern, List<String> words) {
+    public Set<String> findIdxByIdxSubstringInListStrings(String pattern, List<String> words) {
         Set<String> onPath = new TreeSet<>();
 
         // create automaton
@@ -59,7 +59,8 @@ public class AhoCorasick {
         char[] charArray = pattern.toCharArray();
         for (int i = 0; i < charArray.length; i++) {
             char ch = charArray[i];
-            v = go(v, charToIndex(ch));
+            v = goWithOutSuffixLink(v, charToIndex(ch));
+            if (v == -1) break;
             Vertex vertex = vertexList.get(v);
             if (i == charArray.length - 1) {
                 onPath = vertex.words;
@@ -88,6 +89,12 @@ public class AhoCorasick {
             }
         }
         return onPath;
+    }
+
+    // обычный переход без перехода по суффиксной ссылке
+    private int goWithOutSuffixLink(int v, int sym) {
+        Vertex vertex = vertexList.get(v);
+        return vertex.children[sym];
     }
 
     // обычный переход
@@ -181,13 +188,14 @@ public class AhoCorasick {
 //            aho.addToTrie(w);
 //        }
 
-        System.out.println(new AhoCorasick(26).findSubstringInListOfStrings("bagg",
+        System.out.println(new AhoCorasick(26).findIdxByIdxSubstringInListStrings("bag",
                 Arrays.asList("bags",
                         "baggage",
                         "banner",
                         "box",
                         "cloths",
-                        "ab")
+                        "ab",
+                        "bbag")
         ));
 
         System.out.println(new AhoCorasick(26).findStringInListOfStrings("bags",
