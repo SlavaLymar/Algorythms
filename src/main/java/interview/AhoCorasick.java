@@ -3,6 +3,8 @@ package interview;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AhoCorasick {
 
@@ -42,6 +44,57 @@ public class AhoCorasick {
             }
         }
         return startIndexes;
+    }
+
+    public Set<String> findIdxByIdxSubstringInListStrings(String pattern, List<String> words) {
+        Set<String> onPath = new TreeSet<>();
+
+        // create automaton
+        for (String word : words) {
+            this.entryList.add(word);
+            this.addToTrie(word);
+        }
+
+        int v = 0;
+        char[] charArray = pattern.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            char ch = charArray[i];
+            v = goWithOutSuffixLink(v, charToIndex(ch));
+            if (v == -1) break;
+            Vertex vertex = vertexList.get(v);
+            if (i == charArray.length - 1) {
+                onPath = vertex.words;
+            }
+        }
+        return onPath;
+    }
+
+    public Set<String> findStringInListOfStrings(String pattern, List<String> words) {
+        Set<String> onPath = new TreeSet<>();
+
+        // create automaton
+        for (String word : words) {
+            this.entryList.add(word);
+            this.addToTrie(word);
+        }
+
+        int v = 0;
+        char[] charArray = pattern.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            char ch = charArray[i];
+            v = go(v, charToIndex(ch));
+            Vertex vertex = vertexList.get(v);
+            if (i == charArray.length - 1 && vertex.isLeaf) {
+                onPath = vertex.words;
+            }
+        }
+        return onPath;
+    }
+
+    // обычный переход без перехода по суффиксной ссылке
+    private int goWithOutSuffixLink(int v, int sym) {
+        Vertex vertex = vertexList.get(v);
+        return vertex.children[sym];
     }
 
     // обычный переход
@@ -85,6 +138,7 @@ public class AhoCorasick {
                 vertexList.get(v).children[sym] = vertexCount++;
             }
             v = vertexList.get(v).children[sym];
+            vertexList.get(v).words.add(word);
         }
         vertexList.get(v).isLeaf = true;
     }
@@ -95,6 +149,7 @@ public class AhoCorasick {
 
     private class Vertex {
 
+        Set<String> words;               // лист строк для которых эта вершина является префиксом
         int[] children;                  // массив сыновей
         boolean isLeaf;                  // терминальная вершина
         int parent;                      // родительская вершина
@@ -107,6 +162,7 @@ public class AhoCorasick {
             this.go = newIntArray(alphaBetSize);
             this.parent = -1;
             this.suffixLink = -1;
+            this.words = new TreeSet<>();
         }
 
         private int[] newIntArray(int size) {
@@ -123,5 +179,32 @@ public class AhoCorasick {
                     ", isLeaf=" + isLeaf +
                     '}';
         }
+    }
+
+    public static void main(String[] args) {
+
+//        AhoCorasick aho = new AhoCorasick(26);
+//        for (String w : Arrays.asList("mobile", "mouse", "moneypad", "monitor", "mousepad")) {
+//            aho.addToTrie(w);
+//        }
+
+        System.out.println(new AhoCorasick(26).findIdxByIdxSubstringInListStrings("bag",
+                Arrays.asList("bags",
+                        "baggage",
+                        "banner",
+                        "box",
+                        "cloths",
+                        "ab",
+                        "bbag")
+        ));
+
+        System.out.println(new AhoCorasick(26).findStringInListOfStrings("bags",
+                Arrays.asList("bags",
+                        "baggage",
+                        "banner",
+                        "box",
+                        "cloths",
+                        "ab")
+        ));
     }
 }
