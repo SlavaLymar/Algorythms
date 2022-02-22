@@ -1,121 +1,49 @@
 package leetcode.medium;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WordBreak {
-
-    static class Vertex {
-        int[] children;
-        boolean isLeaf;
-        int parent = -1;
-        int charIndexFromParent;
-
-        Vertex(int alphaBetSize) {
-            this.children = newIntArray(alphaBetSize);
-            this.parent = -1;
-        }
-
-        private int[] newIntArray(int size) {
-            int[] ints = new int[size];
-            Arrays.fill(ints, -1);
-            return ints;
-        }
-    }
-
-
-    List<Vertex> nodes;
-    int alphabetSize = 26;
-    int vertexCount = 0;
 
     //
     // s = "applepenapple", wordDict = ["apple","pen"]
     //
-    //                                0
-    //                            p /   \ a
-    //                             0     0
-    //                          e /       \ p
-    //                           0         0
-    //                         n /          \ p
-    //                          1            0
-    //                                        \ l
-    //                                         0
-    //                                          \ e
-    //                                           1
+    // t f f f f t f f t f f f f t
+    //   i
+    // a p p l e p e n a p p l e
+    // j
+    // set: ["apple","pen"]
     //
+    // t: O (N ^ 3)
+    // space: O ()
     //
     public boolean wordBreak(String s, List<String> wordDict) {
-        this.nodes = new ArrayList<>();
-        this.nodes.add(new Vertex(this.alphabetSize));
-        this.nodes.add(new Vertex(this.alphabetSize));
-        this.vertexCount++;
-
-        this.createAutomation(wordDict);
-
-        int v = 0;
-        for (char ch : s.toCharArray()) {
-            Vertex vertex = this.go(v, ch);
-            if (vertex.parent == -1) return false;
-            if (vertex.isLeaf) {
-                if (this.nodes.get(v).children[this.getSym(ch)] != -1) {
-                    v = this.nodes.get(v).children[this.getSym(ch)];
-                } else {
-                    v = 0;
+        Set<String> wordDictSet = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordDictSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
                 }
-            } else {
-                v = this.nodes.get(v).children[this.getSym(ch)];
             }
         }
-        return v == 0;
-    }
-
-    private int getSym(char ch) {
-        return ch - 'a';
-    }
-
-    //
-    // go to character
-    //
-    private Vertex go(int v, char ch) {
-        int sym = this.getSym(ch);
-        Vertex current = this.nodes.get(v);
-        if (current.children[sym] == -1) {
-            return this.nodes.get(0); // return root
-        } else {
-            return this.nodes.get(current.children[sym]);
-        }
-    }
-
-    //
-    // create automation
-    // t: O (N * M), where N - words' count, M - count of unique characters
-    // space: O (N * M)
-    //
-    private void createAutomation(List<String> wordDict) {
-        for (String word : wordDict) {
-            int v = 0;
-            for (char ch : word.toCharArray()) {
-                int sym = this.getSym(ch);
-                if (this.nodes.get(v).children[sym] == -1) {
-                    Vertex vertex = this.nodes.get(this.vertexCount);
-                    vertex.parent = v;
-                    vertex.charIndexFromParent = sym;
-                    this.nodes.add(new Vertex(this.alphabetSize));
-                    this.nodes.get(v).children[sym] = vertexCount++;
-                }
-                v = this.nodes.get(v).children[sym];
-            }
-            this.nodes.get(v).isLeaf = true;
-        }
+        return dp[s.length()];
     }
 
     public static void main(String[] args) {
-//        System.out.println(new WordBreak().wordBreak("applepenapple", Arrays.asList("apple", "pen")));
-//        System.out.println(new WordBreak().wordBreak("bb", Arrays.asList("a", "b", "bbb", "bbbb")));
-//        System.out.println(new WordBreak().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat")));
-//        System.out.println(new WordBreak().wordBreak("aaaaaaa", Arrays.asList("aaaa","aa")));
-        System.out.println(new WordBreak().wordBreak("aaaaaaa", Arrays.asList("aaaa","aaa")));
+        System.out.println(new WordBreak().wordBreak("applepenapple", Arrays.asList("apple", "pen"))); // true
+        System.out.println(new WordBreak().wordBreak("bb", Arrays.asList("a", "b", "bbb", "bbbb"))); // true
+        System.out.println(new WordBreak().wordBreak("catsandog", Arrays.asList("cats", "dog", "sand", "and", "cat"))); // false
+        System.out.println(new WordBreak().wordBreak("aaaaaaa", Arrays.asList("aaaa","aa"))); // false
+        System.out.println(new WordBreak().wordBreak("aaaaaaa", Arrays.asList("aaaa", "aaa"))); // true
+        System.out.println(new WordBreak().wordBreak("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
+                "aaaaaaaaaaaaaaaaaaab", Arrays.asList("a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa",
+                "aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"))); // false
     }
 }
 
