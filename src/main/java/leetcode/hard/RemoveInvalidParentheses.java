@@ -1,5 +1,7 @@
 package leetcode.hard;
 
+import java.util.*;
+
 public class RemoveInvalidParentheses {
     
     static class Parentheses {
@@ -94,7 +96,7 @@ public class RemoveInvalidParentheses {
                 result.add(p.str);
             }
         }
-        return result.isEmpty() ? Arrays.asList("") : result;
+        return result.isEmpty() ? Collections.singletonList("") : result;
     }
   
   
