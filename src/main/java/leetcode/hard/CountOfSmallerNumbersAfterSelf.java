@@ -12,45 +12,40 @@ public class CountOfSmallerNumbersAfterSelf {
     // 5,2,6,1
     //
     // helper:
-    //   l
-    // 1,6
-    //   r
-    // m
+    // l
+    // 1,2,5,6
+    //       r
+    //   m
     //
-    // 0,1,1,0
+    // 2,1,1,0
     //
     // t: O (N * Log N)
     // space: O (N)
     //
     public List<Integer> countSmaller(int[] nums) {
-        List<Integer> ans = new ArrayList<>();
-        ArrayList<Integer> arr = new ArrayList<>();
-
-        for (int num : nums) arr.add(num);
-
-        Collections.sort(arr);
-
+        List<Integer> answer = new ArrayList<>();
+        ArrayList<Integer> helper = new ArrayList<>();
+        for (int num : nums) helper.add(num);
+        Collections.sort(helper);
         for (int num : nums) {
-            int index = binarySearch(arr, num);
-            ans.add(index);
-            arr.remove(index);
+            int index = binarySearch(helper, num);
+            answer.add(index);
+            helper.remove(index);
         }
-
-        return ans;
+        return answer;
     }
 
-    public int binarySearch(ArrayList<Integer> arr, int target) {
-        int start = 0;
-        int end = arr.size() - 1;
-        int mid = 0;
-
-        while (start <= end) {
-            mid = start + ((end - start) / 2);
-            int val = arr.get(mid);
-            if (val < target) start = mid + 1;
-            else end = mid - 1;
+    public int binarySearch(ArrayList<Integer> helper, int target) {
+        int left = 0,  right = helper.size() - 1, mid = 0;
+        while (left <= right) {
+            mid = (right + left) / 2;
+            if (helper.get(mid) < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
         }
-        if (arr.get(start) == target) return start;
+        if (helper.get(left) == target) return left;
         return mid;
     }
 
