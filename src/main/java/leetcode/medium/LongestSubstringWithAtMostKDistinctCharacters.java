@@ -13,7 +13,7 @@ public class LongestSubstringWithAtMostKDistinctCharacters {
     // max: 3
     //
     // t: O (N)
-    // space: O (N)
+    // space: O (K)
     //
     public int lengthOfLongestSubstringKDistinct(String s, int k) {
         int max = 0, start = 0;
