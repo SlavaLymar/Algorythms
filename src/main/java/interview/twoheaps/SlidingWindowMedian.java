@@ -1,12 +1,12 @@
 package interview.twoheaps;
 
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class SlidingWindowMedian {
 
-    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
-    PriorityQueue<Integer> minHeap = new PriorityQueue<>(Integer::compare);
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.naturalOrder());
 
     public double[] findSlidingWindowMedian(int[] nums, int k) {
         double[] result = new double[nums.length - k + 1];
